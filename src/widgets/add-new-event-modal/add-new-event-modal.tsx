@@ -4,6 +4,7 @@ import { Modal } from "../modal/modal"
 import axios from "axios"
 import { DayEvent } from "../../shared/common-types"
 import { Button } from "../../shared/ui/button/button"
+import { Input } from "../../shared/ui/input/input"
 
 type PortalProps = {
   isShown: boolean
@@ -50,15 +51,17 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
       button={<Button onClick={() => setNewEvent(title, day)}>Добавить</Button>}
     >
       <div className={"new-event-form"}>
-        <input
+        <Input
           type={"text"}
           value={title || ""}
-          onChange={(e) => setTitle(e.target.value)}
+          title={"Название"}
+          setValue={setTitle}
         />
-        <input
+        <Input
           type={"date"}
           value={day || ""}
-          onChange={(e) => setDay(e.target.value)}
+          title={"День"}
+          setValue={setDay}
         />
       </div>
     </Modal>
