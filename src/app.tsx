@@ -1,5 +1,4 @@
-import 'app.css'
-
+import {Calendar} from "./widgets/calendar/calendar";
 /**
  * **Что надо сделать для MVP:** <br/>
  * - Календарь, показывающий все события <br/>
@@ -9,10 +8,10 @@ import 'app.css'
  * - Время конца
  * - Приоритет
  * */
-export function AppComponent() {
+export function App() {
   return (
     <div className="main">
-      Календарь
+      <Calendar />
     </div>
   )
 }

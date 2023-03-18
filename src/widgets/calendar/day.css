@@ -1,0 +1,21 @@
+.day--box {
+    /* Отступы */
+    padding: 10px;
+
+    /* Основные свойства */
+    border: #0003 1px solid;
+    border-radius: 20px;
+    height: 220px;
+
+    /* Выравниваем */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* UX выделения */
+    cursor: pointer;
+}
+
+.day--box p {
+    user-select: none;
+}
