@@ -9,7 +9,7 @@
 .calendar--box {
     width: 100%;
     display: grid;
-    gap: 20px;
+    gap: 10px;
     padding: 20px;
     grid-template-columns: repeat(7, 1fr);
 }

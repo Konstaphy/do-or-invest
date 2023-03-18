@@ -1,0 +1,28 @@
+.portal-background {
+    /*Настраиваем размеры*/
+    height: 100vh;
+    width: 100vw;
+
+    /*Размещаем по центру*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /*Настраиваем стили*/
+    background-color: #0003;
+
+    /*Размещаем по всему экрану*/
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.portal-content {
+    background-color: white;
+    border-radius: 10px;
+    min-width: 300px;
+    min-height: 400px;
+    width: auto;
+    height: auto;
+    padding: 10px;
+}
