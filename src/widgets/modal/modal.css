@@ -18,11 +18,32 @@
 }
 
 .portal-content {
+    box-shadow: #0002 5px -5px 25px;
     background-color: white;
     border-radius: 10px;
     min-width: 300px;
     min-height: 400px;
     width: auto;
     height: auto;
+    font-size: 14px;
+    display: grid;
+    grid-auto-rows: auto 1fr 40px;
+}
+
+.portal-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
     padding: 10px;
+    box-shadow: #0001 1px 0 18px;
+    font-weight: 500;
+}
+
+.portal-footer {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
