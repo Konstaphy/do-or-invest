@@ -16,6 +16,24 @@ export const MonthFromNumber: Record<number, string> = {
   11: "Декабрь",
 }
 
+export const getMonthDuration = (month: number, year: number) => {
+  switch (month) {
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30
+    case 1:
+      if (year % 4 === 0) {
+        return 29
+      } else {
+        return 28
+      }
+    default:
+      return 31
+  }
+}
+
 export const WeekDayFromNumber: Record<number, string> = {
   0: "Воскресенье",
   1: "Понедельник",
