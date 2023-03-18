@@ -29,3 +29,8 @@
     display: flex;
     gap: 20px;
 }
+
+.calendar-month-choosing p {
+    cursor: pointer;
+    font-size: 12px;
+}

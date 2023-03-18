@@ -30,7 +30,10 @@ export const Calendar: React.FC = () => {
 
   // Массив дней которые относятся к прошлому месяцу
   const firstWeekButPastMonthDays = useMemo(() => {
-    const daysCount = dayjs(`${currentMonth + 1}-01-${currentYear}`).day() - 1
+    const daysCountIndexed = dayjs(
+      `${currentMonth + 1}-01-${currentYear}`,
+    ).day()
+    const daysCount = daysCountIndexed === 0 ? 6 : daysCountIndexed - 1
     return new Array(daysCount).fill(0).map((v, i) => i + 1)
   }, [currentMonth, currentYear])
 
@@ -78,15 +81,17 @@ export const Calendar: React.FC = () => {
       />
       <div className={"calendar-header"}>
         <div className={"calendar-info"}>
-          <h3>{MonthFromNumber[currentMonth]}</h3>
+          <h3>
+            {MonthFromNumber[currentMonth]}, {currentYear}
+          </h3>
           <p>
             Сегодня: {currentDay.weekDay}, {currentDay.month},{" "}
             <strong>{currentDay.day} число</strong>
           </p>
         </div>
         <div className={"calendar-month-choosing"}>
-          <Button onClick={getPrevMonth}>Предыдущий месяц</Button>
-          <Button onClick={getNextMonth}>Следующий месяц</Button>
+          <p onClick={getPrevMonth}>Предыдущий месяц</p>
+          <p onClick={getNextMonth}>Следующий месяц</p>
         </div>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button onClick={() => setModalShown(true)} circle>
