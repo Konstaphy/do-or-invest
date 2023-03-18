@@ -20,3 +20,8 @@
 .day--box p {
     user-select: none;
 }
+
+.day--events {
+    display: flex;
+    gap: 5px;
+}

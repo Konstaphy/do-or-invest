@@ -5,6 +5,7 @@ import "./calendar.css"
 import dayjs from "dayjs"
 import { AddNewEventModal } from "../add-new-event-modal/add-new-event-modal"
 import axios from "axios"
+import { DayEvent } from "../../shared/common-types"
 
 export const Calendar: React.FC = () => {
   const [isModalShown, setModalShown] = useState(false)
@@ -26,13 +27,7 @@ export const Calendar: React.FC = () => {
     return new Array(daysCount).fill(0).map((v, i) => i + 1)
   }, [])
 
-  const [events, setEvents] = useState<
-    {
-      title: string
-      day: string
-      id: string
-    }[]
-  >([])
+  const [events, setEvents] = useState<DayEvent[]>([])
 
   // useEffect(() => {
   //   axios
@@ -57,7 +52,11 @@ export const Calendar: React.FC = () => {
     <div className={"calendar"}>
       <p>{currentDay.month}</p>
       <p>Сегодня: {currentDay.weekDay}</p>
-      <AddNewEventModal setIsShown={setModalShown} isShown={isModalShown} />
+      <AddNewEventModal
+        setEvents={setEvents}
+        setIsShown={setModalShown}
+        isShown={isModalShown}
+      />
       <button onClick={() => setModalShown(true)}>Plus</button>
       <div className={"calendar--box"}>
         {firstWeekButPastMonthDays.map((v, i) => (

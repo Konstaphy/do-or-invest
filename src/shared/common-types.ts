@@ -8,3 +8,9 @@ export type Day = {
   weekDay: string
   source: Dayjs
 }
+
+export type DayEvent = {
+  title: string
+  day: string
+  id: string
+}

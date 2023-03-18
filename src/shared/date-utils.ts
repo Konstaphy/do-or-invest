@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { Day } from "./types"
+import { Day } from "./common-types"
 
 export const MonthFromNumber: Record<number, string> = {
   0: "Январь",

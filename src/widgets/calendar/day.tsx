@@ -23,9 +23,17 @@ export function Day(props: {
         {props.day} число
       </p>
 
-      {props.events?.map((ev) => {
-        return <p style={{ fontSize: "12px", color: "#0008" }}> {ev.title} </p>
-      })}
+      <div className={"day--events"}>
+        {props.events?.map((v, i) => {
+          if (i > 4) {
+            return null
+          }
+          return <span key={v.id} className={"circle-pseudo"}></span>
+        })}
+      </div>
+      {props.events?.length === 0 ? (
+        <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>
+      ) : null}
     </div>
   )
 }

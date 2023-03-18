@@ -2,15 +2,18 @@ import React, { useState, useCallback } from "react"
 import "../modal/modal.css"
 import { Modal } from "../modal/modal"
 import axios from "axios"
+import { DayEvent } from "../../shared/common-types"
 
 type PortalProps = {
   isShown: boolean
   setIsShown: (v: boolean) => void
+  setEvents: (v: DayEvent[]) => void
 }
 
 export const AddNewEventModal: React.FC<PortalProps> = ({
   isShown,
   setIsShown,
+  setEvents,
 }) => {
   const [title, setTitle] = useState<string | null>(null)
   const [day, setDay] = useState<string | null>(null)
@@ -32,11 +35,8 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
           },
           { signal: controller.signal },
         )
-        .then((r) => console.log(r.data))
-
-      return () => {
-        controller.abort()
-      }
+        .then((r) => setEvents(r.data.events))
+        .finally(() => setIsShown(false))
     },
     [],
   )
