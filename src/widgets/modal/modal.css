@@ -27,7 +27,7 @@
     height: auto;
     font-size: 14px;
     display: grid;
-    grid-auto-rows: auto 1fr 40px;
+    grid-auto-rows: auto 1fr auto;
 }
 
 .portal-title {
@@ -41,9 +41,9 @@
 }
 
 .portal-footer {
-    height: 40px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
 }

@@ -1,0 +1,22 @@
+.button-customized {
+    border-radius: 5px;
+    min-width: 50px;
+    min-height: 30px;
+    outline: none;
+    filter: drop-shadow(0 0 5px #0003);
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.circle {
+    font-size: 20px;
+    border-radius: 100%;
+    min-height: 50px;
+    height: 55px;
+    width: 55px;
+}
