@@ -1,15 +1,27 @@
 import { getToday } from "../../shared/date-utils"
 import React from "react"
 import "./day.css"
+import axios from "axios"
+import dayjs from "dayjs"
+import { DayEvent } from "../../shared/common-types"
 
 export function Day(props: {
   day: number
-  events?: {
-    title: string
-    day: string
-    id: string
-  }[]
+  month: number
+  year: number
+  events?: DayEvent[]
 }) {
+  const onClick = () => {
+    axios
+      .post<{ date: string }>("http://127.0.0.1:8080/event/get-all-by-date", {
+        date: dayjs(
+          `${props.year}-${props.month}-${props.day}`,
+          "YYYY-MM-DD 00:00:00",
+        ).format("YYYY-MM-DD"),
+      })
+      .then(console.log)
+  }
+
   if (props.day === -1) {
     return (
       <div className={"day--box"}>
@@ -18,7 +30,7 @@ export function Day(props: {
     )
   }
   return (
-    <div className={"day--box"}>
+    <div className={"day--box"} onClick={onClick}>
       <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
         {props.day} число
       </p>

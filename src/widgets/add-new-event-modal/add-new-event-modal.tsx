@@ -21,23 +21,24 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
   const [day, setDay] = useState<string | null>(null)
 
   const setNewEvent = useCallback(
-    (title: string | null, day: string | null) => {
+    (title: string | null, day: string | null, time: string | null) => {
       if (!title || !day) {
         return
       }
       const controller = new AbortController()
       axios
         .post(
-          "http://127.0.0.1:5000/event/new",
+          "http://127.0.0.1:8080/event/new",
           {
             title,
-            day,
+            date: day,
+            time: time,
             user_id: "0",
             is_done: false,
           },
           { signal: controller.signal },
         )
-        .then((r) => setEvents(r.data.events))
+        .then((r) => setEvents(r.data))
         .finally(() => setIsShown(false))
     },
     [],
@@ -48,7 +49,11 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
       isShown={isShown}
       setIsShown={setIsShown}
       title={"Добавить новое событие"}
-      button={<Button onClick={() => setNewEvent(title, day)}>Добавить</Button>}
+      button={
+        <Button onClick={() => setNewEvent(title, day, "16:00:00")}>
+          Добавить
+        </Button>
+      }
     >
       <div className={"new-event-form"}>
         <Input

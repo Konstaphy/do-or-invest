@@ -11,6 +11,7 @@ export type Day = {
 
 export type DayEvent = {
   title: string
-  day: string
+  date: string
+  is_done: boolean
   id: string
 }

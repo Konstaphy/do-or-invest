@@ -61,14 +61,8 @@ export const Calendar: React.FC = () => {
   // запрашиваем все события
   useEffect(() => {
     axios
-      .get<{
-        events: {
-          title: string
-          day: string
-          id: string
-        }[]
-      }>("http://127.0.0.1:5000/event")
-      .then((res) => setEvents(res.data.events))
+      .get<DayEvent[]>("http://127.0.0.1:8080/event", { withCredentials: true })
+      .then((res) => setEvents(res.data))
       .catch((e) => console.log(e))
   }, [])
 
@@ -101,16 +95,26 @@ export const Calendar: React.FC = () => {
       </div>
       <div className={"calendar--box"}>
         {firstWeekButPastMonthDays.map((v, i) => (
-          <Day day={-1} key={`${i}-pastMonthDay`} />
+          <Day
+            year={currentYear}
+            month={currentMonth + 1}
+            day={-1}
+            key={`${i}-pastMonthDay`}
+          />
         ))}
         {dayArray.map((v) => (
           <Day
+            year={currentYear}
+            month={currentMonth + 1}
             events={events?.filter((e) => {
               const thatDate = `${currentMonth + 1}-${v}-${currentYear}`
-              const thatDay = dayjs(thatDate)
-              const eventDay = dayjs(e.day, "yyyy-MM-dd")
-
-              return eventDay.diff(thatDay) === 0
+              const thatDay = dayjs(thatDate, "MM-DD-YYYY")?.format(
+                "YYYY-MM-DD",
+              )
+              const eventDay = dayjs(e.date, "YYYY-MM-DD HH:mm:ss").format(
+                "YYYY-MM-DD",
+              )
+              return thatDay === eventDay
             })}
             day={v}
             key={v}
