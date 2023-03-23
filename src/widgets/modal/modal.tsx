@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom"
-import React from "react"
+import React, { useEffect } from "react"
 import "./modal.css"
 
-type PortalProps = {
+export type PortalProps = {
   isShown: boolean
   setIsShown: (v: boolean) => void
   children: React.ReactElement | React.ReactElement[]
@@ -17,6 +17,16 @@ export const Modal: React.FC<PortalProps> = ({
   title,
   button,
 }) => {
+  // Дизейблим скролл при появлении модалки
+  useEffect(() => {
+    if (isShown) {
+      document.body.style.overflow = "hidden"
+      return () => {
+        document.body.style.overflow = "auto"
+      }
+    }
+  }, [isShown])
+
   if (!isShown) {
     return null
   }

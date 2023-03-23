@@ -1,22 +1,16 @@
 import React, { useState } from "react"
 import "../modal/modal.css"
-import { Modal } from "../modal/modal"
+import { Modal, PortalProps } from "../modal/modal"
 import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
 import { Input } from "../../shared/ui/input/input"
 
-type PortalProps = {
-  isShown: boolean
-  setIsShown: (v: boolean) => void
-  setEvents: (v: DayEvent[]) => void
-}
-
-export const AddNewEventModal: React.FC<PortalProps> = ({
-  isShown,
-  setIsShown,
-  setEvents,
-}) => {
+export const AddNewEventModal: React.FC<
+  Pick<PortalProps, "setIsShown" | "isShown"> & {
+    setEvents: (events: DayEvent[]) => void
+  }
+> = ({ isShown, setIsShown, setEvents }) => {
   const [title, setTitle] = useState<string | null>(null)
   const [day, setDay] = useState<string | null>(null)
 

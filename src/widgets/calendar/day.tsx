@@ -1,9 +1,10 @@
 import { getToday } from "../../shared/lib/date-utils"
-import React from "react"
+import React, { useState } from "react"
 import "./day.css"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import dayjs from "dayjs"
 import { DayEvent } from "../../shared/model/common-types"
+import { EventsModal } from "../events-modal/events-modal"
 
 export function Day(props: {
   day: number
@@ -11,15 +12,24 @@ export function Day(props: {
   year: number
   events?: DayEvent[]
 }) {
+  const [isModalShown, setModalShown] = useState<boolean>(false)
+  const [currentEvents, setCurrentEvents] = useState<DayEvent[]>([])
+
   const onClick = () => {
     axios
-      .post<{ date: string }>("http://127.0.0.1:8080/events/get-all-by-date", {
-        date: dayjs(
-          `${props.year}-${props.month}-${props.day}`,
-          "YYYY-MM-DD 00:00:00",
-        ).format("YYYY-MM-DD"),
+      .post<{ date: unknown }, AxiosResponse<DayEvent[]>>(
+        "http://127.0.0.1:8080/events/get-all-by-date",
+        {
+          date: dayjs(
+            `${props.year}-${props.month}-${props.day}`,
+            "YYYY-MM-DD 00:00:00",
+          ).format("YYYY-MM-DD"),
+        },
+      )
+      .then((res) => {
+        setCurrentEvents(res.data)
+        setModalShown(true)
       })
-      .then(console.log)
   }
 
   if (props.day === -1) {
@@ -31,27 +41,34 @@ export function Day(props: {
   }
 
   return (
-    <div className={"day--box"} onClick={onClick}>
-      <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
-        {props.day} число
-      </p>
+    <>
+      <EventsModal
+        isShown={isModalShown}
+        setIsShown={setModalShown}
+        events={currentEvents}
+      />
+      <div className={"day--box"} onClick={onClick}>
+        <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
+          {props.day} число
+        </p>
 
-      <div className={"day--events"}>
-        {props.events?.map((v, i) => {
-          if (i > 4) {
-            return null
-          }
-          return (
-            <span
-              key={v.id}
-              className={v.is_expired ? "circle-pseudo red" : "circle-pseudo"}
-            ></span>
-          )
-        })}
-        {props.events?.length === 0 ? (
-          <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>
-        ) : null}
+        <div className={"day--events"}>
+          {props.events?.map((v, i) => {
+            if (i > 4) {
+              return null
+            }
+            return (
+              <span
+                key={v.id}
+                className={v.is_expired ? "circle-pseudo red" : "circle-pseudo"}
+              ></span>
+            )
+          })}
+          {props.events?.length === 0 ? (
+            <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>
+          ) : null}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
