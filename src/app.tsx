@@ -1,9 +1,10 @@
 import { Calendar } from "./widgets/calendar/calendar"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import axios from "axios"
-import sha256 from "crypto-js/sha256"
 import { AuthPage } from "./pages/auth-page"
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { AlertHelper } from "./shared/helpers/alert/ui/alert-helper"
+import { openErrorAlert } from "./shared/helpers/alert/model/alert-store"
 
 export function App() {
   // проверяем при первом запуске нет ли пройденных ивентов
@@ -34,11 +35,15 @@ export function App() {
 
   const navigate = useNavigate()
   useEffect(() => {
-    if (!accessToken) navigate("/auth")
+    if (!accessToken) {
+      openErrorAlert("Вы не зарегистрированы")
+      navigate("/auth")
+    }
   }, [])
 
   return (
     <div className="main">
+      <AlertHelper />
       <Routes>
         <Route path={"/"} element={<Calendar />}></Route>
         <Route path={"/auth"} element={<AuthPage />}></Route>

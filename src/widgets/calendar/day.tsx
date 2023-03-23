@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from "axios"
 import dayjs from "dayjs"
 import { DayEvent } from "../../shared/model/common-types"
 import { EventsModal } from "../events-modal/events-modal"
+import { openErrorAlert } from "../../shared/helpers/alert/model/alert-store"
 
 export function Day(props: {
   day: number
@@ -29,12 +30,25 @@ export function Day(props: {
       .then((res) => {
         setCurrentEvents(res.data)
         setModalShown(true)
+        if (res.data.length === 0) {
+          openErrorAlert("Событий нет!")
+        }
+      })
+      .catch(() => {
+        openErrorAlert("Что-то пошло не так :(")
       })
   }
 
   if (props.day === -1) {
     return (
-      <div className={"day--box"}>
+      <div
+        className={"day--box"}
+        onClick={() =>
+          openErrorAlert(
+            "Невозможно посмотреть записи за отличающийся от текущего месяц",
+          )
+        }
+      >
         <p style={{ color: "#0005" }}>Прошлый месяц</p>
       </div>
     )

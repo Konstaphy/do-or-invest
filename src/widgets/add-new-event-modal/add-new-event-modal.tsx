@@ -5,6 +5,10 @@ import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
 import { Input } from "../../shared/ui/input/input"
+import {
+  openSuccessAlert,
+  openErrorAlert,
+} from "../../shared/helpers/alert/model/alert-store"
 
 export const AddNewEventModal: React.FC<
   Pick<PortalProps, "setIsShown" | "isShown"> & {
@@ -35,7 +39,13 @@ export const AddNewEventModal: React.FC<
         },
         { signal: controller.signal },
       )
-      .then((r) => setEvents(r.data))
+      .then((r) => {
+        openSuccessAlert("Событие создано успешно")
+        setEvents(r.data)
+      })
+      .catch(() => {
+        openErrorAlert("Произошла ошибка при сохранении события")
+      })
       .finally(() => setIsShown(false))
   }
 

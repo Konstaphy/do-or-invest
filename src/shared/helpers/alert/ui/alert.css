@@ -1,0 +1,31 @@
+.alert {
+    position: fixed;
+    top: -40px;
+    left: 50vw;
+    transform: translate(-50%);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    width: 590px;
+    height: 35px;
+    font-size: 12px;
+    border-radius: 10px;
+    transition: 200ms ease-in;
+    opacity: 0;
+    display: flex;
+}
+
+.alert.open {
+    /*display: flex;*/
+    top: 10px;
+    transition: 200ms ease-in;
+    opacity: 1;
+}
+
+.alert.error {
+    background-color: rgba(204, 49, 49, 0.94);
+}
+
+.alert.success {
+    background-color: rgba(27, 145, 19, 0.94);
+}
