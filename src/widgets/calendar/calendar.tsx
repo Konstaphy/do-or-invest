@@ -3,13 +3,13 @@ import {
   getToday,
   getMonthDuration,
   MonthFromNumber,
-} from "../../shared/date-utils"
+} from "../../shared/lib/date-utils"
 import { Day } from "./day"
 import "./calendar.css"
 import dayjs from "dayjs"
 import { AddNewEventModal } from "../add-new-event-modal/add-new-event-modal"
 import axios from "axios"
-import { DayEvent } from "../../shared/common-types"
+import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
 
 export const Calendar: React.FC = () => {

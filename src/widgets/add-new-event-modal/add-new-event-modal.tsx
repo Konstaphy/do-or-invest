@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import "../modal/modal.css"
 import { Modal } from "../modal/modal"
 import axios from "axios"
-import { DayEvent } from "../../shared/common-types"
+import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
 import { Input } from "../../shared/ui/input/input"
 

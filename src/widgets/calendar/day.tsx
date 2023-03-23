@@ -1,9 +1,9 @@
-import { getToday } from "../../shared/date-utils"
+import { getToday } from "../../shared/lib/date-utils"
 import React from "react"
 import "./day.css"
 import axios from "axios"
 import dayjs from "dayjs"
-import { DayEvent } from "../../shared/common-types"
+import { DayEvent } from "../../shared/model/common-types"
 
 export function Day(props: {
   day: number
