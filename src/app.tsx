@@ -30,14 +30,6 @@ export function App() {
       .catch(() => {
         localStorage.removeItem("accessToken")
       })
-      .then((res) => {
-        axios
-          .get("http://127.0.0.1:8080/events/check-expired", {
-            headers: { authorization: `Bearer ${res}` },
-            withCredentials: true,
-          })
-          .then(console.log)
-      })
   }, [accessToken])
 
   const navigate = useNavigate()

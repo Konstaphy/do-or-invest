@@ -31,6 +31,14 @@ export class AuthTransport extends Transport {
       throw e
     })
   }
+  public getPenalty() {
+    // Настриваем первичную авторизацию
+
+    return this.get<{ penalty: number }>("/get-penalty").catch((e) => {
+      logError(e, "AuthTransport")
+      throw e
+    })
+  }
 
   private getAuthConfig(username: string, password: string) {
     return {

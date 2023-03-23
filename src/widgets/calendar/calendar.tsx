@@ -11,8 +11,10 @@ import { AddNewEventModal } from "../add-new-event-modal/add-new-event-modal"
 import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
+import { AuthTransport } from "../../features/auth/auth-transport"
 
 export const Calendar: React.FC = () => {
+  const [penalty, setPenalty] = useState<number>(0)
   // Текущий день
   const currentDay = useMemo(() => {
     return getToday()
@@ -66,6 +68,21 @@ export const Calendar: React.FC = () => {
       })
       .then((res) => setEvents(res.data))
       .catch((e) => console.log(e))
+      .then((res) => {
+        axios
+          .get("http://127.0.0.1:8080/events/check-expired", {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            withCredentials: true,
+          })
+          .then((res) => setEvents(res.data))
+      })
+  }, [])
+
+  useEffect(() => {
+    const transport = new AuthTransport()
+    transport.getPenalty().then((res) => setPenalty(res.penalty))
   }, [])
 
   return (
@@ -84,6 +101,10 @@ export const Calendar: React.FC = () => {
             Сегодня: {currentDay.weekDay}, {currentDay.month},{" "}
             <strong>{currentDay.day} число</strong>
           </p>
+          <div>
+            Ваш общий штраф ={" "}
+            <strong style={{ color: "darkred" }}>{penalty}</strong>
+          </div>
         </div>
         <div className={"calendar-month-choosing"}>
           <p onClick={getPrevMonth}>Предыдущий месяц</p>
