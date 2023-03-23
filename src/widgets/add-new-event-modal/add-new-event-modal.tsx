@@ -31,9 +31,9 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
     const controller = new AbortController()
     axios
       .post(
-        "http://127.0.0.1:8080/events/new",
+        "http://localhost:8080/events/new",
         {
-          title,
+          title: title,
           date: day,
           time: time,
           user_id: "0",

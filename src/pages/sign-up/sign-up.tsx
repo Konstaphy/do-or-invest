@@ -1,25 +1,39 @@
 import axios from "axios"
 import sha256 from "crypto-js/sha256"
 import { useNavigate } from "react-router-dom"
+import { AuthTransport } from "../../features/auth/auth-transport"
+import { useState } from "react"
 
 export const SignUp = () => {
   const navigate = useNavigate()
+  const [username, setUsername] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+
   const signUp = () => {
-    axios
-      .post(
-        "http://127.0.0.1:8080/users/sign-up",
-        { email: "Konstaphy@gmail.com" },
-        {
-          auth: {
-            username: "Konstaphy",
-            password: sha256("454222").toString(),
-          },
-          withCredentials: true,
-        },
-      )
-      .then(() => {
-        navigate("/")
-      })
+    const transport = new AuthTransport()
+    transport.signUp(username, password, email).then(() => {
+      navigate("/")
+    })
   }
-  return <button onClick={signUp}>SignUp</button>
+  return (
+    <>
+      <input
+        placeholder={"username"}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        value={password}
+        placeholder={"password"}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <input
+        value={email}
+        placeholder={"email"}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <button onClick={signUp}>SignUp</button>
+    </>
+  )
 }

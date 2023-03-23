@@ -1,23 +1,14 @@
-import axios from "axios"
-import sha256 from "crypto-js/sha256"
 import { useNavigate } from "react-router-dom"
+import { AuthTransport } from "../../features/auth/auth-transport"
 
 export const Login = () => {
   const navigate = useNavigate()
   const login = () => {
-    axios
-      .get<{ access_token: string; id: string }>(
-        "http://127.0.0.1:8080/users/login",
-        {
-          auth: {
-            username: "Konstaphy",
-            password: sha256("454222").toString(),
-          },
-          withCredentials: true,
-        },
-      )
+    const transport = new AuthTransport()
+    transport
+      .login("Konstaphy", "454222")
       .then((res) => {
-        localStorage.setItem("accessToken", res.data.access_token)
+        localStorage.setItem("accessToken", res.access_token)
         navigate("/")
       })
       .catch(() => {
