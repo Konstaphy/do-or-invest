@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import "../modal/modal.css"
 import { Modal, PortalProps } from "../modal/modal"
 import axios from "axios"
-import { DayEvent } from "../../shared/model/common-types"
+import { DayEvent, Priotity } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
 import { Input } from "../../shared/ui/input/input"
 import {
@@ -17,6 +17,7 @@ export const AddNewEventModal: React.FC<
 > = ({ isShown, setIsShown, setEvents }) => {
   const [title, setTitle] = useState<string | null>(null)
   const [day, setDay] = useState<string | null>(null)
+  const [priority, setPriority] = useState<Priotity>(Priotity.LOW)
 
   const setNewEvent = (
     title: string | null,
@@ -36,6 +37,7 @@ export const AddNewEventModal: React.FC<
           time: time,
           user_id: "0",
           is_done: false,
+          priority: priority,
         },
         { signal: controller.signal },
       )
@@ -73,6 +75,11 @@ export const AddNewEventModal: React.FC<
           title={"День"}
           setValue={setDay}
         />
+        <select>
+          <option onSelect={() => setPriority(Priotity.LOW)}>Низкий</option>
+          <option onSelect={() => setPriority(Priotity.MEDIUM)}>Средний</option>
+          <option onSelect={() => setPriority(Priotity.HIGH)}>Высокий</option>
+        </select>
       </div>
     </Modal>
   )

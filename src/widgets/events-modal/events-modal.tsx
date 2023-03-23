@@ -1,6 +1,7 @@
 import React from "react"
 import { PortalProps, Modal } from "../modal/modal"
 import { DayEvent } from "../../shared/model/common-types"
+import { Offset } from "../../shared/ui/offset/offset"
 
 export const EventsModal: React.FC<
   Pick<PortalProps, "isShown" | "setIsShown"> & { events: DayEvent[] }
@@ -12,7 +13,9 @@ export const EventsModal: React.FC<
     <Modal isShown={isShown} setIsShown={setIsShown} title={"События"}>
       <div>
         {events.map((ev) => (
-          <p>{ev.title}</p>
+          <Offset offsetHorizontal={"m"} offsetVertical={"s"}>
+            <p>{ev.title}</p>
+          </Offset>
         ))}
       </div>
     </Modal>

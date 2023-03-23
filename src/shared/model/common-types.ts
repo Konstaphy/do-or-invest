@@ -16,3 +16,9 @@ export type DayEvent = {
   is_expired: boolean
   id: string
 }
+
+export enum Priotity {
+  LOW,
+  MEDIUM,
+  HIGH,
+}
