@@ -61,7 +61,9 @@ export const Calendar: React.FC = () => {
   // запрашиваем все события
   useEffect(() => {
     axios
-      .get<DayEvent[]>("http://127.0.0.1:8080/event", { withCredentials: true })
+      .get<DayEvent[]>("http://127.0.0.1:8080/events/", {
+        withCredentials: true,
+      })
       .then((res) => setEvents(res.data))
       .catch((e) => console.log(e))
   }, [])

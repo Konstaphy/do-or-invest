@@ -7,11 +7,37 @@
     font-family: "Open Sans", Arial, sans-serif;
 }
 
+.circle-pseudo {
+    position: relative;
+    transform: translate(-7.5px, -7.5px);
+}
+
 .circle-pseudo::before {
     content: " ";
-    display: inline-block;
+    position: absolute;
+    left: 5px;
+    top: 5px;
     width: 5px;
     height: 5px;
     border-radius: 100%;
     background-color: forestgreen;
+}
+
+.red::before {
+    background-color: darkred;
+}
+
+.circle-pseudo::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #00f00020;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+}
+
+.red::after {
+    background-color: #f0000020;
 }

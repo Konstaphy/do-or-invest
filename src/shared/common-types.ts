@@ -13,5 +13,6 @@ export type DayEvent = {
   title: string
   date: string
   is_done: boolean
+  is_expired: boolean
   id: string
 }

@@ -13,7 +13,7 @@ export function Day(props: {
 }) {
   const onClick = () => {
     axios
-      .post<{ date: string }>("http://127.0.0.1:8080/event/get-all-by-date", {
+      .post<{ date: string }>("http://127.0.0.1:8080/events/get-all-by-date", {
         date: dayjs(
           `${props.year}-${props.month}-${props.day}`,
           "YYYY-MM-DD 00:00:00",
@@ -29,6 +29,7 @@ export function Day(props: {
       </div>
     )
   }
+
   return (
     <div className={"day--box"} onClick={onClick}>
       <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
@@ -40,12 +41,17 @@ export function Day(props: {
           if (i > 4) {
             return null
           }
-          return <span key={v.id} className={"circle-pseudo"}></span>
+          return (
+            <span
+              key={v.id}
+              className={v.is_expired ? "circle-pseudo red" : "circle-pseudo"}
+            ></span>
+          )
         })}
+        {props.events?.length === 0 ? (
+          <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>
+        ) : null}
       </div>
-      {props.events?.length === 0 ? (
-        <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>
-      ) : null}
     </div>
   )
 }

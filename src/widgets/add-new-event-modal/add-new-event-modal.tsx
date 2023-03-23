@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState } from "react"
 import "../modal/modal.css"
 import { Modal } from "../modal/modal"
 import axios from "axios"
@@ -20,29 +20,30 @@ export const AddNewEventModal: React.FC<PortalProps> = ({
   const [title, setTitle] = useState<string | null>(null)
   const [day, setDay] = useState<string | null>(null)
 
-  const setNewEvent = useCallback(
-    (title: string | null, day: string | null, time: string | null) => {
-      if (!title || !day) {
-        return
-      }
-      const controller = new AbortController()
-      axios
-        .post(
-          "http://127.0.0.1:8080/event/new",
-          {
-            title,
-            date: day,
-            time: time,
-            user_id: "0",
-            is_done: false,
-          },
-          { signal: controller.signal },
-        )
-        .then((r) => setEvents(r.data))
-        .finally(() => setIsShown(false))
-    },
-    [],
-  )
+  const setNewEvent = (
+    title: string | null,
+    day: string | null,
+    time: string | null,
+  ) => {
+    if (!title || !day) {
+      return
+    }
+    const controller = new AbortController()
+    axios
+      .post(
+        "http://127.0.0.1:8080/events/new",
+        {
+          title,
+          date: day,
+          time: time,
+          user_id: "0",
+          is_done: false,
+        },
+        { signal: controller.signal },
+      )
+      .then((r) => setEvents(r.data))
+      .finally(() => setIsShown(false))
+  }
 
   return (
     <Modal
