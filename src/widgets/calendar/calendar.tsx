@@ -11,7 +11,11 @@ import { AddNewEventModal } from "../add-new-event-modal/add-new-event-modal"
 import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
-import { AuthTransport } from "../../features/auth/auth-transport"
+import { AuthTransport } from "../../features/auth/api/auth-transport"
+import {
+  openSuggestion,
+  closeSuggestion,
+} from "../../shared/helpers/suggestion/model/suggestion-store"
 
 export const Calendar: React.FC = () => {
   const [penalty, setPenalty] = useState<number>(0)
@@ -68,7 +72,7 @@ export const Calendar: React.FC = () => {
       })
       .then((res) => setEvents(res.data))
       .catch((e) => console.log(e))
-      .then((res) => {
+      .then(() => {
         axios
           .get("http://127.0.0.1:8080/events/check-expired", {
             headers: {
@@ -79,6 +83,17 @@ export const Calendar: React.FC = () => {
           .then((res) => setEvents(res.data))
       })
   }, [])
+
+  useEffect(() => {
+    if (events.length === 0) {
+      openSuggestion(
+        "Создайте новое событие!",
+        'Нажмите на значок "+" и выберите необходимые параметры',
+      )
+    } else {
+      closeSuggestion()
+    }
+  }, [events])
 
   useEffect(() => {
     const transport = new AuthTransport()

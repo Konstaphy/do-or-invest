@@ -4,8 +4,7 @@ import React from "react"
 type AlertType = "success" | "error"
 
 type AlertStore = {
-  isAlertOpen: boolean
-  element: React.ReactElement | null
+  content: React.ReactElement | null
   type: AlertType
   openAlert: (v: React.ReactElement, type?: AlertType) => void
   closeAlert: () => void
@@ -18,9 +17,9 @@ export const openSuccessAlert = (v: string) =>
 
 export const useAlertStore = create<AlertStore>((set) => ({
   isAlertOpen: false,
-  element: null,
+  content: null,
   type: "error",
   openAlert: (v: React.ReactElement, type?: AlertType) =>
-    set({ isAlertOpen: true, element: v, type: type || "error" }),
-  closeAlert: () => set({ isAlertOpen: false, element: null, type: "error" }),
+    set({ content: v, type: type || "error" }),
+  closeAlert: () => set({ content: null, type: "error" }),
 }))

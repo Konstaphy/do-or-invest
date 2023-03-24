@@ -1,5 +1,5 @@
-import { Transport } from "../../shared/model/transport"
-import { logError } from "../../shared/lib/log-error"
+import { Transport } from "../../../shared/model/transport"
+import { logError } from "../../../shared/lib/log-error"
 import sha256 from "crypto-js/sha256"
 
 export class AuthTransport extends Transport {
@@ -19,7 +19,6 @@ export class AuthTransport extends Transport {
     })
   }
   public signUp(username: string, password: string, email: string | null) {
-    // Настриваем первичную авторизацию
     const config = this.getAuthConfig(username, password)
 
     return this.post<{ email: string | null }, { access_token: string }>(
@@ -32,8 +31,6 @@ export class AuthTransport extends Transport {
     })
   }
   public getPenalty() {
-    // Настриваем первичную авторизацию
-
     return this.get<{ penalty: number }>("/get-penalty").catch((e) => {
       logError(e, "AuthTransport")
       throw e

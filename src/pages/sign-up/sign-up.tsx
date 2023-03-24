@@ -1,7 +1,5 @@
-import axios from "axios"
-import sha256 from "crypto-js/sha256"
 import { useNavigate } from "react-router-dom"
-import { AuthTransport } from "../../features/auth/auth-transport"
+import { AuthTransport } from "../../features/auth/api/auth-transport"
 import { useState } from "react"
 
 export const SignUp = () => {

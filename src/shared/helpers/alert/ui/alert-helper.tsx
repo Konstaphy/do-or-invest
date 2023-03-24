@@ -4,18 +4,18 @@ import { useEffect } from "react"
 import "./alert.css"
 
 export const AlertHelper = () => {
-  const { element, closeAlert, isAlertOpen, type } = useAlertStore()
+  const { content, closeAlert, type } = useAlertStore()
   useEffect(() => {
-    if (isAlertOpen) {
+    if (!!content) {
       setTimeout(() => {
         closeAlert()
       }, 1000)
     }
-  }, [isAlertOpen])
+  }, [content])
 
   return createPortal(
-    <div className={`alert ${isAlertOpen ? "open" : undefined} ${type}`}>
-      {element}
+    <div className={`alert ${!!content ? "open" : undefined} ${type}`}>
+      {content}
     </div>,
     document.querySelector("body") as HTMLBodyElement,
   )
