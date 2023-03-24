@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { AuthTransport } from "../../features/auth/api/auth-transport"
+import { AuthTransport } from "../../../features/auth/api/auth-transport"
 import { useState } from "react"
 
 export const SignUp = () => {

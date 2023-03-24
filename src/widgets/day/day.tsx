@@ -39,21 +39,6 @@ export function Day(props: {
       })
   }
 
-  if (props.day === -1) {
-    return (
-      <div
-        className={"day--box"}
-        onClick={() =>
-          openErrorAlert(
-            "Невозможно посмотреть записи за отличающийся от текущего месяц",
-          )
-        }
-      >
-        <p style={{ color: "#0005" }}>Прошлый месяц</p>
-      </div>
-    )
-  }
-
   return (
     <>
       <EventsModal

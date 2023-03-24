@@ -4,10 +4,10 @@ import {
   getMonthDuration,
   MonthFromNumber,
 } from "../../shared/lib/date-utils"
-import { Day } from "./day"
+import { Day } from "../../widgets/day/day"
 import "./calendar.css"
 import dayjs from "dayjs"
-import { AddNewEventModal } from "../add-new-event-modal/add-new-event-modal"
+import { AddNewEventModal } from "../../widgets/add-new-event-modal/add-new-event-modal"
 import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
 import { Button } from "../../shared/ui/button/button"
@@ -108,7 +108,7 @@ export const Calendar: React.FC = () => {
         isShown={isModalShown}
       />
       <div className={"calendar-header"}>
-        <div className={"calendar-info"}>
+        <div className={"day-info"}>
           <h3>
             {MonthFromNumber[currentMonth]}, {currentYear}
           </h3>
