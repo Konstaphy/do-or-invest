@@ -22,3 +22,10 @@ export enum Priotity {
   MEDIUM,
   HIGH,
 }
+
+export type User = {
+  id: string | null
+  accessToken: string | null
+  username: string | null
+  email: string | null
+}

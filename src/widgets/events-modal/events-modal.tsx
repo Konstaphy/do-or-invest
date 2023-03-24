@@ -13,7 +13,7 @@ export const EventsModal: React.FC<
     <Modal isShown={isShown} setIsShown={setIsShown} title={"События"}>
       <div>
         {events.map((ev) => (
-          <Offset offsetHorizontal={"m"} offsetVertical={"s"}>
+          <Offset key={ev.id} offsetHorizontal={"m"} offsetVertical={"s"}>
             <p>{ev.title}</p>
           </Offset>
         ))}

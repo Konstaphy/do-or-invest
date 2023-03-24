@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
+import { useUserStore } from "./user-store"
 
 export class Transport {
   protected readonly url: string = "http://127.0.0.1:8080"
@@ -6,7 +7,7 @@ export class Transport {
 
   constructor(url: string) {
     this.url += url
-    this.token = localStorage.getItem("accessToken")
+    this.token = useUserStore.getState().accessToken
   }
 
   post<T, OUT>(

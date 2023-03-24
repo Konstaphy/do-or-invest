@@ -16,6 +16,7 @@ import {
   openSuggestion,
   closeSuggestion,
 } from "../../shared/helpers/suggestion/model/suggestion-store"
+import { useUserStore } from "../../shared/model/user-store"
 
 export const Calendar: React.FC = () => {
   const [penalty, setPenalty] = useState<number>(0)
@@ -64,25 +65,35 @@ export const Calendar: React.FC = () => {
     }
   }, [currentMonth, currentYear])
 
+  const accessToken = useUserStore((st) => st.accessToken)
+
+  console.log(events)
+
   // запрашиваем все события
   useEffect(() => {
+    if (!accessToken) {
+      return
+    }
     axios
       .get<DayEvent[]>("http://127.0.0.1:8080/events/", {
         withCredentials: true,
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
       })
       .then((res) => setEvents(res.data))
       .catch((e) => console.log(e))
-      .then(() => {
-        axios
-          .get("http://127.0.0.1:8080/events/check-expired", {
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            withCredentials: true,
-          })
-          .then((res) => setEvents(res.data))
-      })
-  }, [])
+    // .then(() => {
+    //   axios
+    //     .get("http://127.0.0.1:8080/events/check-expired", {
+    //       headers: {
+    //         authorization: `Bearer ${accessToken}`,
+    //       },
+    //       withCredentials: true,
+    //     })
+    //     .then((res) => setEvents(res.data))
+    // })
+  }, [accessToken])
 
   useEffect(() => {
     if (events.length === 0) {

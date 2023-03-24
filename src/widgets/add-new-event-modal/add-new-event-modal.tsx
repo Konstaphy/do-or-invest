@@ -9,6 +9,7 @@ import {
   openSuccessAlert,
   openErrorAlert,
 } from "../../shared/helpers/alert/model/alert-store"
+import { useUserStore } from "../../shared/model/user-store"
 
 export const AddNewEventModal: React.FC<
   Pick<PortalProps, "setIsShown" | "isShown"> & {
@@ -18,13 +19,17 @@ export const AddNewEventModal: React.FC<
   const [title, setTitle] = useState<string | null>(null)
   const [day, setDay] = useState<string | null>(null)
   const [priority, setPriority] = useState<Priotity>(Priotity.LOW)
+  const { id, accessToken } = useUserStore((user) => ({
+    id: user.id,
+    accessToken: user.accessToken,
+  }))
 
   const setNewEvent = (
     title: string | null,
     day: string | null,
     time: string | null,
   ) => {
-    if (!title || !day) {
+    if (!title || !day || !id) {
       return
     }
     const controller = new AbortController()
@@ -35,11 +40,14 @@ export const AddNewEventModal: React.FC<
           title: title,
           date: day,
           time: time,
-          user_id: "0",
+          user_id: id,
           is_done: false,
           priority: priority,
         },
-        { signal: controller.signal },
+        {
+          signal: controller.signal,
+          headers: { authorization: `Bearer ${accessToken}` },
+        },
       )
       .then((r) => {
         openSuccessAlert("Событие создано успешно")
