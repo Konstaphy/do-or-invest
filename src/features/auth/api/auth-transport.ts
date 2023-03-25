@@ -7,17 +7,15 @@ export class AuthTransport extends Transport {
     super("/users")
   }
 
+  // Логин в систему, получаем токен
   public login(username: string, password: string) {
     // Настриваем первичную авторизацию
     const config = this.getAuthConfig(username, password)
 
-    return this.get<{
-      access_token: string
-    }>("/login", config).catch((e) => {
-      logError(e, "AuthTransport")
-      throw e
-    })
+    return this.get<{ access_token: string }>("/login", config)
   }
+
+  // Создание нового пользователя
   public signUp(username: string, password: string, email: string | null) {
     const config = this.getAuthConfig(username, password)
 
@@ -25,23 +23,28 @@ export class AuthTransport extends Transport {
       "/sign-up",
       { email },
       config,
-    ).catch((e) => {
-      logError(e, "AuthTransport")
-      throw e
-    })
-  }
-  public getPenalty() {
-    return this.get<{ penalty: number }>("/get-penalty").catch((e) => {
-      logError(e, "AuthTransport")
-      throw e
-    })
+    )
   }
 
+  // Получить штраф пользователя
+  public getPenalty() {
+    return this.get<{ penalty: number }>("/get-penalty")
+  }
+
+  // Пересоздаем токен
+  public refresh() {
+    return this.get<{ access_token: string; username: string; id: string }>("/refresh")
+  }
+
+  // Получеам конфигурацию без токена
   private getAuthConfig(username: string, password: string) {
     return {
       auth: {
         username,
         password: sha256(password).toString(),
+      },
+      headers: {
+        authorization: null,
       },
     }
   }

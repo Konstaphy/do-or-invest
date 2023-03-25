@@ -1,15 +1,15 @@
 import React, { useState } from "react"
-import "../modal/modal.css"
-import { Modal, PortalProps } from "../modal/modal"
+import "../core/modal.css"
+import { Modal, PortalProps } from "../core/modal"
 import axios from "axios"
-import { DayEvent, Priotity } from "../../shared/model/common-types"
-import { Button } from "../../shared/ui/button/button"
-import { Input } from "../../shared/ui/input/input"
+import { DayEvent, Priotity } from "../../../shared/model/common-types"
+import { Button } from "../../../shared/ui/button/button"
+import { Input } from "../../../shared/ui/input/input"
 import {
   openSuccessAlert,
   openErrorAlert,
-} from "../../shared/helpers/alert/model/alert-store"
-import { useUserStore } from "../../shared/model/user-store"
+} from "../../../shared/helpers/alert/model/alert-store"
+import { useUserStore } from "../../../shared/model/user-store"
 
 export const AddNewEventModal: React.FC<
   Pick<PortalProps, "setIsShown" | "isShown"> & {
@@ -24,11 +24,7 @@ export const AddNewEventModal: React.FC<
     accessToken: user.accessToken,
   }))
 
-  const setNewEvent = (
-    title: string | null,
-    day: string | null,
-    time: string | null,
-  ) => {
+  const setNewEvent = (title: string | null, day: string | null, time: string | null) => {
     if (!title || !day || !id) {
       return
     }
@@ -65,24 +61,12 @@ export const AddNewEventModal: React.FC<
       setIsShown={setIsShown}
       title={"Добавить новое событие"}
       button={
-        <Button onClick={() => setNewEvent(title, day, "16:00:00")}>
-          Добавить
-        </Button>
+        <Button onClick={() => setNewEvent(title, day, "16:00:00")}>Добавить</Button>
       }
     >
       <div className={"new-event-form"}>
-        <Input
-          type={"text"}
-          value={title || ""}
-          title={"Название"}
-          setValue={setTitle}
-        />
-        <Input
-          type={"date"}
-          value={day || ""}
-          title={"День"}
-          setValue={setDay}
-        />
+        <Input type={"text"} value={title || ""} title={"Название"} setValue={setTitle} />
+        <Input type={"date"} value={day || ""} title={"День"} setValue={setDay} />
         <select>
           <option onSelect={() => setPriority(Priotity.LOW)}>Низкий</option>
           <option onSelect={() => setPriority(Priotity.MEDIUM)}>Средний</option>

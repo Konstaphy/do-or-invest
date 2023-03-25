@@ -1,11 +1,12 @@
-import { getToday } from "../../shared/lib/date-utils"
+import { getToday } from "../../../shared/lib/date-utils"
 import React, { useState } from "react"
 import "./day.css"
 import axios, { AxiosResponse } from "axios"
 import dayjs from "dayjs"
-import { DayEvent } from "../../shared/model/common-types"
-import { EventsModal } from "../events-modal/events-modal"
-import { openErrorAlert } from "../../shared/helpers/alert/model/alert-store"
+import { DayEvent } from "../../../shared/model/common-types"
+import { EventsModal } from "../../modal/events-modal/events-modal"
+import { openErrorAlert } from "../../../shared/helpers/alert/model/alert-store"
+import { useUserStore } from "../../../shared/model/user-store"
 
 export function Day(props: {
   day: number
@@ -15,6 +16,7 @@ export function Day(props: {
 }) {
   const [isModalShown, setModalShown] = useState<boolean>(false)
   const [currentEvents, setCurrentEvents] = useState<DayEvent[]>([])
+  const { accessToken } = useUserStore()
 
   const onClick = () => {
     axios
@@ -26,6 +28,7 @@ export function Day(props: {
             "YYYY-MM-DD 00:00:00",
           ).format("YYYY-MM-DD"),
         },
+        { headers: { authorization: `Bearer ${accessToken}` } },
       )
       .then((res) => {
         setCurrentEvents(res.data)
@@ -37,6 +40,19 @@ export function Day(props: {
       .catch(() => {
         openErrorAlert("Что-то пошло не так :(")
       })
+  }
+
+  if (props.day === -1) {
+    return (
+      <div
+        className={"day--box"}
+        onClick={() =>
+          openErrorAlert("Невозможно посмотреть записи за отличающийся от текущего месяц")
+        }
+      >
+        <p style={{ color: "#0005" }}>Прошлый месяц</p>
+      </div>
+    )
   }
 
   return (

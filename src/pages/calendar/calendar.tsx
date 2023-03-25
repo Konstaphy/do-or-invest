@@ -1,29 +1,19 @@
 import React, { useMemo, useEffect, useState, useCallback } from "react"
-import {
-  getToday,
-  getMonthDuration,
-  MonthFromNumber,
-} from "../../shared/lib/date-utils"
-import { Day } from "../../widgets/day/day"
+import { getToday, getMonthDuration, MonthFromNumber } from "../../shared/lib/date-utils"
+import { Day } from "../../widgets/calendar/day/day"
 import "./calendar.css"
 import dayjs from "dayjs"
-import { AddNewEventModal } from "../../widgets/add-new-event-modal/add-new-event-modal"
-import axios from "axios"
 import { DayEvent } from "../../shared/model/common-types"
-import { Button } from "../../shared/ui/button/button"
-import { AuthTransport } from "../../features/auth/api/auth-transport"
-import {
-  openSuggestion,
-  closeSuggestion,
-} from "../../shared/helpers/suggestion/model/suggestion-store"
+import { openSuggestion } from "../../shared/helpers/suggestion/model/suggestion-store"
 import { useUserStore } from "../../shared/model/user-store"
+import { EventsTransport } from "../../features/events/api/events-transport"
+import { CalendarHeader } from "../../widgets/calendar/calendar-header/calendar-header"
 
 export const Calendar: React.FC = () => {
-  const [penalty, setPenalty] = useState<number>(0)
+  const accessToken = useUserStore((st) => st.accessToken)
+  const [isFetched, setFetched] = useState<boolean>(false)
   // Текущий день
-  const currentDay = useMemo(() => {
-    return getToday()
-  }, [])
+  const currentDay = getToday()
 
   //Выбранный месяц и год
   const [currentMonth, setCurrentMonth] = useState(currentDay.source.month())
@@ -37,111 +27,46 @@ export const Calendar: React.FC = () => {
 
   // Массив дней которые относятся к прошлому месяцу
   const firstWeekButPastMonthDays = useMemo(() => {
-    const daysCountIndexed = dayjs(
-      `${currentMonth + 1}-01-${currentYear}`,
-    ).day()
+    const daysCountIndexed = dayjs(`${currentMonth + 1}-01-${currentYear}`).day()
     const daysCount = daysCountIndexed === 0 ? 6 : daysCountIndexed - 1
     return new Array(daysCount).fill(0).map((v, i) => i + 1)
   }, [currentMonth, currentYear])
 
   // Все события и флаг открыта ли модалка нового события
   const [events, setEvents] = useState<DayEvent[]>([])
-  const [isModalShown, setModalShown] = useState(false)
-
-  const getNextMonth = useCallback(() => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0)
-      setCurrentYear(currentYear + 1)
-    } else {
-      setCurrentMonth(currentMonth + 1)
-    }
-  }, [currentMonth, currentYear])
-  const getPrevMonth = useCallback(() => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11)
-      setCurrentYear(currentYear - 1)
-    } else {
-      setCurrentMonth(currentMonth - 1)
-    }
-  }, [currentMonth, currentYear])
-
-  const accessToken = useUserStore((st) => st.accessToken)
-
-  console.log(events)
 
   // запрашиваем все события
   useEffect(() => {
     if (!accessToken) {
       return
     }
-    axios
-      .get<DayEvent[]>("http://127.0.0.1:8080/events/", {
-        withCredentials: true,
-        headers: {
-          authorization: "Bearer " + accessToken,
-        },
-      })
-      .then((res) => setEvents(res.data))
-      .catch((e) => console.log(e))
-    // .then(() => {
-    //   axios
-    //     .get("http://127.0.0.1:8080/events/check-expired", {
-    //       headers: {
-    //         authorization: `Bearer ${accessToken}`,
-    //       },
-    //       withCredentials: true,
-    //     })
-    //     .then((res) => setEvents(res.data))
-    // })
+    new EventsTransport()
+      .getEvents()
+      .then(setEvents)
+      .catch(console.log)
+      .finally(() => setFetched(true))
   }, [accessToken])
 
   useEffect(() => {
-    if (events.length === 0) {
+    if (events.length === 0 && isFetched) {
       openSuggestion(
         "Создайте новое событие!",
         'Нажмите на значок "+" и выберите необходимые параметры',
       )
-    } else {
-      closeSuggestion()
     }
   }, [events])
 
-  useEffect(() => {
-    const transport = new AuthTransport()
-    transport.getPenalty().then((res) => setPenalty(res.penalty))
-  }, [])
-
   return (
     <div className={"calendar"}>
-      <AddNewEventModal
+      <CalendarHeader
         setEvents={setEvents}
-        setIsShown={setModalShown}
-        isShown={isModalShown}
+        currentMonth={currentMonth}
+        currentYear={currentYear}
+        currentDay={currentDay}
+        setCurrentMonth={setCurrentMonth}
+        setCurrentYear={setCurrentYear}
       />
-      <div className={"calendar-header"}>
-        <div className={"day-info"}>
-          <h3>
-            {MonthFromNumber[currentMonth]}, {currentYear}
-          </h3>
-          <p>
-            Сегодня: {currentDay.weekDay}, {currentDay.month},{" "}
-            <strong>{currentDay.day} число</strong>
-          </p>
-          <div>
-            Ваш общий штраф ={" "}
-            <strong style={{ color: "darkred" }}>{penalty}</strong>
-          </div>
-        </div>
-        <div className={"calendar-month-choosing"}>
-          <p onClick={getPrevMonth}>Предыдущий месяц</p>
-          <p onClick={getNextMonth}>Следующий месяц</p>
-        </div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={() => setModalShown(true)} circle>
-            +
-          </Button>
-        </div>
-      </div>
+
       <div className={"calendar--box"}>
         {firstWeekButPastMonthDays.map((v, i) => (
           <Day
@@ -157,12 +82,8 @@ export const Calendar: React.FC = () => {
             month={currentMonth + 1}
             events={events?.filter((e) => {
               const thatDate = `${currentMonth + 1}-${v}-${currentYear}`
-              const thatDay = dayjs(thatDate, "MM-DD-YYYY")?.format(
-                "YYYY-MM-DD",
-              )
-              const eventDay = dayjs(e.date, "YYYY-MM-DD HH:mm:ss").format(
-                "YYYY-MM-DD",
-              )
+              const thatDay = dayjs(thatDate, "MM-DD-YYYY")?.format("YYYY-MM-DD")
+              const eventDay = dayjs(e.date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD")
               return thatDay === eventDay
             })}
             day={v}

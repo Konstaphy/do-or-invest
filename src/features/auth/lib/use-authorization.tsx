@@ -3,48 +3,39 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { openErrorAlert } from "../../../shared/helpers/alert/model/alert-store"
 import { useUserStore } from "../../../shared/model/user-store"
+import { AuthTransport } from "../api/auth-transport"
 
 export const useAuthorization = () => {
   const [isRefreshed, setRefreshed] = useState<boolean>(false)
-
   const { setUser } = useUserStore()
+  const navigate = useNavigate()
 
   useEffect(() => {
+    // если токена нет то и запрашивать нечего
     if (!localStorage.getItem("accessToken")) {
       console.error("Unauthenticated")
-      return
+      return navigate("/auth")
     }
 
-    axios
-      .get("http://127.0.0.1:8080/users/refresh", {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        withCredentials: true,
-      })
+    new AuthTransport()
+      .refresh()
       .then((res) => {
-        localStorage.setItem("accessToken", res.data.access_token)
+        // Мапим токен в локальное хранилище
+        localStorage.setItem("accessToken", res.access_token)
+        // Получаем данные о пользователе
         setUser({
-          username: res.data.username,
-          id: res.data.id,
+          username: res.username,
+          id: res.id,
           email: null,
-          accessToken: res.data.access_token,
+          accessToken: res.access_token,
         })
+        // Говорим системе что токен актуален
         setRefreshed(true)
-        return res.data
       })
       .catch(() => {
         localStorage.removeItem("accessToken")
       })
   }, [])
-
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
-      openErrorAlert("Вы не зарегистрированы")
-      navigate("/auth")
-    }
-  }, [localStorage.getItem("accessToken")])
 
   return { isRefreshed }
 }

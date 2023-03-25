@@ -1,7 +1,7 @@
 import React from "react"
-import { PortalProps, Modal } from "../modal/modal"
-import { DayEvent } from "../../shared/model/common-types"
-import { Offset } from "../../shared/ui/offset/offset"
+import { PortalProps, Modal } from "../core/modal"
+import { DayEvent } from "../../../shared/model/common-types"
+import { Offset } from "../../../shared/ui/offset/offset"
 
 export const EventsModal: React.FC<
   Pick<PortalProps, "isShown" | "setIsShown"> & { events: DayEvent[] }
