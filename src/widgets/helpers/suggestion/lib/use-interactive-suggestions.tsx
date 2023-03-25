@@ -1,5 +1,5 @@
 import { openSuggestion } from "../model/suggestion-store"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export const SuggestionActions = {
   userOpenedMenu: "userOpenedMenu",
@@ -12,20 +12,26 @@ export const useInteractiveSuggestions = () => {
   const [shownSuggestionThisSession, setShownSuggestionsThisSession] =
     useState<boolean>(false)
 
-  const didUserOpenMenu = Boolean(localStorage.getItem(SuggestionActions.userOpenedMenu))
-  if (!didUserOpenMenu) {
-    setShownSuggestionsThisSession(true)
-    openSuggestion(
-      "Доступны новые возможности!",
-      "Нажмите на 'h', чтобы открыть меню и просмотреть список возможных действий",
+  useEffect(() => {
+    const didUserOpenMenu = Boolean(
+      localStorage.getItem(SuggestionActions.userOpenedMenu),
     )
-  }
-  const userCreatedTask = Boolean(localStorage.getItem(SuggestionActions.userCreatedTask))
-  if (!userCreatedTask && !shownSuggestionThisSession) {
-    setShownSuggestionsThisSession(true)
-    openSuggestion(
-      "Добавьте новую задачу!",
-      "Нажмите на + вверху экрана, чтобы добавить новое событие",
+    if (!didUserOpenMenu) {
+      setShownSuggestionsThisSession(true)
+      openSuggestion(
+        "Доступны новые возможности!",
+        "Нажмите на 'h', чтобы открыть меню и просмотреть список возможных действий",
+      )
+    }
+    const userCreatedTask = Boolean(
+      localStorage.getItem(SuggestionActions.userCreatedTask),
     )
-  }
+    if (!userCreatedTask && !shownSuggestionThisSession) {
+      setShownSuggestionsThisSession(true)
+      openSuggestion(
+        "Добавьте новую задачу!",
+        "Нажмите на + вверху экрана, чтобы добавить новое событие",
+      )
+    }
+  }, [])
 }

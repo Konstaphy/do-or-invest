@@ -7,6 +7,7 @@ import { DayEvent } from "../../../shared/model/common-types"
 import { EventsModal } from "../../modal/events-modal/events-modal"
 import { openErrorAlert } from "../../helpers/alert/model/alert-store"
 import { useUserStore } from "../../../shared/model/user-store"
+import { EventLight } from "../../../entities/event/ui/event-light"
 
 export function Day(props: {
   day: number
@@ -69,18 +70,12 @@ export function Day(props: {
         <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
           {props.day} число
         </p>
-
         <div className={"day--events"}>
           {props.events?.map((v, i) => {
             if (i > 4) {
               return null
             }
-            return (
-              <span
-                key={v.id}
-                className={v.is_expired ? "circle-pseudo red" : "circle-pseudo"}
-              ></span>
-            )
+            return <EventLight event={v} />
           })}
           {props.events?.length === 0 ? (
             <p style={{ fontSize: "12px", color: "#0008" }}>Событий нет</p>

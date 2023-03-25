@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { Day, DayEvent } from "../../../shared/model/common-types"
 import { usePenalty } from "../../../features/auth/lib/use-penalty"
 import { AddNewEventModal } from "../../modal/add-new-event-modal/add-new-event-modal"
+import { useEventsStore } from "../../../shared/model/events-store"
 
 type CalendarHeaderProps = {
   currentMonth: number
@@ -11,7 +12,6 @@ type CalendarHeaderProps = {
   currentDay: Day
   setCurrentMonth: (month: number) => void
   setCurrentYear: (month: number) => void
-  setEvents: (events: DayEvent[]) => void
 }
 export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   currentMonth,
@@ -19,8 +19,9 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   currentDay,
   setCurrentMonth,
   setCurrentYear,
-  setEvents,
 }) => {
+  const setEvents = useEventsStore((st) => st.setEvents)
+
   // конфиг модалки добавления
   const [isModalShown, setModalShown] = useState(false)
 

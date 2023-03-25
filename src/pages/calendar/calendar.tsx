@@ -8,6 +8,7 @@ import { openSuggestion } from "../../widgets/helpers/suggestion/model/suggestio
 import { useUserStore } from "../../shared/model/user-store"
 import { EventsTransport } from "../../features/events/api/events-transport"
 import { CalendarHeader } from "../../widgets/calendar/calendar-header/calendar-header"
+import { useEventsStore } from "../../shared/model/events-store"
 
 export const Calendar: React.FC = () => {
   const accessToken = useUserStore((st) => st.accessToken)
@@ -32,8 +33,7 @@ export const Calendar: React.FC = () => {
     return new Array(daysCount).fill(0).map((v, i) => i + 1)
   }, [currentMonth, currentYear])
 
-  // Все события и флаг открыта ли модалка нового события
-  const [events, setEvents] = useState<DayEvent[]>([])
+  const { events, setEvents } = useEventsStore()
 
   // запрашиваем все события
   useEffect(() => {
@@ -59,7 +59,6 @@ export const Calendar: React.FC = () => {
   return (
     <div className={"calendar"}>
       <CalendarHeader
-        setEvents={setEvents}
         currentMonth={currentMonth}
         currentYear={currentYear}
         currentDay={currentDay}

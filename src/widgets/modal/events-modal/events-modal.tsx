@@ -1,5 +1,5 @@
 import React from "react"
-import { PortalProps, Modal } from "../core/modal"
+import { PortalProps, Modal } from "../../../shared/ui/modal/modal"
 import { DayEvent } from "../../../shared/model/common-types"
 import { Cell } from "../../../shared/ui/offset/cell"
 import "./event.css"

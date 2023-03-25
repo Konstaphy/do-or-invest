@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useLayoutEffect } from "react"
 import "./menu.css"
 import { SuggestionActions } from "../../helpers/suggestion/lib/use-interactive-suggestions"
 
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleClick = (e: KeyboardEvent) => {
       // Если открыт портал или вводится инпут, то не надо ничего делать
       if (

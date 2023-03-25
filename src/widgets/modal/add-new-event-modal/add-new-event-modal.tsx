@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import "../core/modal.css"
-import { Modal, PortalProps } from "../core/modal"
+import "../../../shared/ui/modal/modal.css"
+import { Modal, PortalProps } from "../../../shared/ui/modal/modal"
 import axios from "axios"
 import { DayEvent, Priotity } from "../../../shared/model/common-types"
 import { Button } from "../../../shared/ui/button/button"
