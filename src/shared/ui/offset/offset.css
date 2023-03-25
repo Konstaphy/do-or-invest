@@ -37,3 +37,15 @@
     margin-top: 30px;
     margin-bottom: 30px;
 }
+
+.cell {
+    display: grid;
+    width: 100%;
+    font-size: 16px;
+    background-color: antiquewhite;
+}
+
+.cell__on-hover:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+    cursor: pointer;
+}

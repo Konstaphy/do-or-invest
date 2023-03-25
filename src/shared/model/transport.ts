@@ -10,7 +10,7 @@ export class Transport {
     this.token = useUserStore.getState().accessToken
   }
 
-  post<T = unknown, OUT = unknown>(
+  protected post<T = unknown, OUT = unknown>(
     controller: string,
     data: T,
     config?: AxiosRequestConfig,
@@ -23,7 +23,10 @@ export class Transport {
       })
       .then((res) => res.data)
   }
-  get<T = unknown>(controller: string, config?: AxiosRequestConfig): Promise<T> {
+  protected get<T = unknown>(
+    controller: string,
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
     return axios
       .get<T>(this.url + controller, {
         ...config,

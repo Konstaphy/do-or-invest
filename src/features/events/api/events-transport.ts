@@ -18,4 +18,8 @@ export class EventsTransport extends Transport {
       priority: event.priority,
     })
   }
+
+  public checkAsDone(event_id: string) {
+    return this.post<{ event_id: string }, DayEvent[]>("/check-as-done", { event_id })
+  }
 }

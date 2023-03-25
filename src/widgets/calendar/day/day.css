@@ -28,3 +28,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.day--box.current {
+    background-color: #f6fff6;
+}
+
+.day--box:hover {
+    box-shadow: 0 0 10px #0002
+}

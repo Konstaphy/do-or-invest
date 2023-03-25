@@ -1,0 +1,11 @@
+.event {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 200px auto auto;
+    width: 100%;
+}
+
+.event__modal {
+    width: 600px;
+    height: 800px;
+}

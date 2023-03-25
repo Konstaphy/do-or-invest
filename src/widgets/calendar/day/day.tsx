@@ -45,7 +45,7 @@ export function Day(props: {
   if (props.day === -1) {
     return (
       <div
-        className={"day--box"}
+        className={`day--box`}
         onClick={() =>
           openErrorAlert("Невозможно посмотреть записи за отличающийся от текущего месяц")
         }
@@ -62,7 +62,10 @@ export function Day(props: {
         setIsShown={setModalShown}
         events={currentEvents}
       />
-      <div className={"day--box"} onClick={onClick}>
+      <div
+        className={`day--box  ${getToday().day === props.day ? "current" : undefined}`}
+        onClick={onClick}
+      >
         <p style={{ color: getToday().day === props.day ? "green" : "black" }}>
           {props.day} число
         </p>
