@@ -1,26 +1,24 @@
 import { Calendar } from "./pages/calendar/calendar"
 import { AuthPage } from "./pages/auth/auth-page"
 import { Route, Routes } from "react-router-dom"
-import { AlertHelper } from "./shared/helpers/alert/ui/alert-helper"
+import { AlertHelper } from "./widgets/helpers/alert/ui/alert-helper"
 import { useAuthorization } from "./features/auth/lib/use-authorization"
-import { SuggestionHelper } from "./shared/helpers/suggestion/ui/suggestion-helper"
-import { useEffect } from "react"
-import { useUserStore } from "./shared/model/user-store"
+import { SuggestionHelper } from "./widgets/helpers/suggestion/ui/suggestion-helper"
 import { Menu } from "./widgets/menu/ui/menu"
 
 export function App() {
   // запрашиваем новый токен
   const { isRefreshed } = useAuthorization()
+  // const navigate = useNavigate()
+  // const { accessToken } = useUserStore()
 
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => {})
-  }, [])
-
-  const { accessToken } = useUserStore()
-
-  if (!isRefreshed && accessToken) {
+  if (!isRefreshed) {
     return <div>loading</div>
   }
+
+  // if (!accessToken) {
+  //   navigate("/auth")
+  // }
 
   return (
     <div className="main">

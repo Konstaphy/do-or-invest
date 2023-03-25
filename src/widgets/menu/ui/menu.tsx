@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./menu.css"
-import { openSuggestion } from "../../../shared/helpers/suggestion/model/suggestion-store"
+import { openSuggestion } from "../../helpers/suggestion/model/suggestion-store"
 
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -13,13 +13,22 @@ export const Menu = () => {
   }, [])
   useEffect(() => {
     const handleClick = (e: KeyboardEvent) => {
-      if (e.key === "h") {
+      // Если открыт портал или вводится инпут, то не надо ничего делать
+      if (
+        e.target !== document.body ||
+        document.body.contains(document.querySelector("div.portal-background"))
+      ) {
+        return
+      }
+
+      if (e.key === "h" || e.key === "р") {
         setIsOpen(!isOpen)
       }
       if (e.key === "Escape") {
         setIsOpen(false)
       }
     }
+
     document.addEventListener("keydown", handleClick)
     return () => {
       document.removeEventListener("keydown", handleClick)

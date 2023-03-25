@@ -1,11 +1,13 @@
 import { useSuggestionStore } from "../model/suggestion-store"
 import { createPortal } from "react-dom"
 import "./suggestion.css"
+import { useUserStore } from "../../../../shared/model/user-store"
 
 export const SuggestionHelper = () => {
   const { description, closeSuggestion, type, title } = useSuggestionStore()
+  const { accessToken } = useUserStore()
 
-  if (!title) {
+  if (!title || !accessToken) {
     return null
   }
   return createPortal(

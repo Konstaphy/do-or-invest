@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios"
 import dayjs from "dayjs"
 import { DayEvent } from "../../../shared/model/common-types"
 import { EventsModal } from "../../modal/events-modal/events-modal"
-import { openErrorAlert } from "../../../shared/helpers/alert/model/alert-store"
+import { openErrorAlert } from "../../helpers/alert/model/alert-store"
 import { useUserStore } from "../../../shared/model/user-store"
 
 export function Day(props: {

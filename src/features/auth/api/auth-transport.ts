@@ -1,5 +1,4 @@
 import { Transport } from "../../../shared/model/transport"
-import { logError } from "../../../shared/lib/log-error"
 import sha256 from "crypto-js/sha256"
 
 export class AuthTransport extends Transport {
@@ -12,18 +11,20 @@ export class AuthTransport extends Transport {
     // Настриваем первичную авторизацию
     const config = this.getAuthConfig(username, password)
 
-    return this.get<{ access_token: string }>("/login", config)
+    return this.get<{ access_token: string; id: number; username: string }>(
+      "/login",
+      config,
+    )
   }
 
   // Создание нового пользователя
   public signUp(username: string, password: string, email: string | null) {
     const config = this.getAuthConfig(username, password)
 
-    return this.post<{ email: string | null }, { access_token: string }>(
-      "/sign-up",
-      { email },
-      config,
-    )
+    return this.post<
+      { email: string | null },
+      { access_token: string; id: number; username: string }
+    >("/sign-up", { email }, config)
   }
 
   // Получить штраф пользователя
@@ -33,7 +34,7 @@ export class AuthTransport extends Transport {
 
   // Пересоздаем токен
   public refresh() {
-    return this.get<{ access_token: string; username: string; id: string }>("/refresh")
+    return this.get<{ access_token: string; username: string; id: number }>("/refresh")
   }
 
   // Получеам конфигурацию без токена

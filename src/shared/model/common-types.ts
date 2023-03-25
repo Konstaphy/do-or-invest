@@ -25,7 +25,7 @@ export enum Priotity {
 }
 
 export type User = {
-  id: string | null
+  id: number | null
   accessToken: string | null
   username: string | null
   email: string | null

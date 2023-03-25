@@ -5,10 +5,7 @@ import axios from "axios"
 import { DayEvent, Priotity } from "../../../shared/model/common-types"
 import { Button } from "../../../shared/ui/button/button"
 import { Input } from "../../../shared/ui/input/input"
-import {
-  openSuccessAlert,
-  openErrorAlert,
-} from "../../../shared/helpers/alert/model/alert-store"
+import { openSuccessAlert, openErrorAlert } from "../../helpers/alert/model/alert-store"
 import { useUserStore } from "../../../shared/model/user-store"
 
 export const AddNewEventModal: React.FC<
