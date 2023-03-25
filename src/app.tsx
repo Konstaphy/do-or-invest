@@ -5,21 +5,16 @@ import { AlertHelper } from "./widgets/helpers/alert/ui/alert-helper"
 import { useAuthorization } from "./features/auth/lib/use-authorization"
 import { SuggestionHelper } from "./widgets/helpers/suggestion/ui/suggestion-helper"
 import { Menu } from "./widgets/menu/ui/menu"
+import { useInteractiveSuggestions } from "./widgets/helpers/suggestion/lib/use-interactive-suggestions"
 
 export function App() {
   // запрашиваем новый токен
   const { isRefreshed } = useAuthorization()
-  // const navigate = useNavigate()
-  // const { accessToken } = useUserStore()
+  useInteractiveSuggestions()
 
   if (!isRefreshed) {
     return <div>loading</div>
   }
-
-  // if (!accessToken) {
-  //   navigate("/auth")
-  // }
-
   return (
     <div className="main">
       <AlertHelper />

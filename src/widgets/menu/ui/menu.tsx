@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react"
 import "./menu.css"
-import { openSuggestion } from "../../helpers/suggestion/model/suggestion-store"
+import { SuggestionActions } from "../../helpers/suggestion/lib/use-interactive-suggestions"
 
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  useEffect(() => {
-    openSuggestion(
-      "Откройте меню и откройте новые возможности",
-      "Нажмите на 'h', чтобы открыть",
-    )
-  }, [])
   useEffect(() => {
     const handleClick = (e: KeyboardEvent) => {
       // Если открыт портал или вводится инпут, то не надо ничего делать
@@ -22,6 +16,7 @@ export const Menu = () => {
       }
 
       if (e.key === "h" || e.key === "р") {
+        localStorage.setItem(SuggestionActions.userOpenedMenu, "true")
         setIsOpen(!isOpen)
       }
       if (e.key === "Escape") {

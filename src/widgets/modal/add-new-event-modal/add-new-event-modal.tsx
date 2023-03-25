@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import "../core/modal.css"
 import { Modal, PortalProps } from "../core/modal"
 import axios from "axios"
@@ -7,6 +7,7 @@ import { Button } from "../../../shared/ui/button/button"
 import { Input } from "../../../shared/ui/input/input"
 import { openSuccessAlert, openErrorAlert } from "../../helpers/alert/model/alert-store"
 import { useUserStore } from "../../../shared/model/user-store"
+import { SuggestionActions } from "../../helpers/suggestion/lib/use-interactive-suggestions"
 
 export const AddNewEventModal: React.FC<
   Pick<PortalProps, "setIsShown" | "isShown"> & {
@@ -20,6 +21,12 @@ export const AddNewEventModal: React.FC<
     id: user.id,
     accessToken: user.accessToken,
   }))
+
+  useEffect(() => {
+    if (isShown) {
+      localStorage.setItem(SuggestionActions.userCreatedTask, "true")
+    }
+  }, [isShown])
 
   const setNewEvent = (title: string | null, day: string | null, time: string | null) => {
     if (!title || !day || !id) {
